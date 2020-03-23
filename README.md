@@ -6,5 +6,6 @@ A bot for my Discord server, spitalul.
 - "Snarky Comments": responds to given keywords with a respective response (linked in a dictionary).
 
 # Files
+- .env: contains the bot token for more secure use.
 - Surgical_Assistant_Commands: contains code for control of the bot via custom commands.
 - Surgical_Assistant_Events: contains code for control of the bot vie events like on_ready() and on_message().
