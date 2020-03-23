@@ -1,6 +1,11 @@
-# surgical-assistant
-A bot for my Discord server.
+# Surgical Assistant
+A bot for my Discord server, spitalul.
 
-The Surgical_Assistant_Commands file contains code for control of the bot via custom commands.
+# Functions
+- Command $trans(dest_lang, message): translates the given message to the destination language and outputs it to the same channel.
+- "Snarky Comments": responds to given keywords with a respective response (linked in a dictionary).
 
-The Surgical_Assistant_Events file contains code for control of the bot vie events like on_ready() and on_message().
+# Files
+- .env: contains the bot token for more secure use.
+- Surgical_Assistant_Commands: contains code for control of the bot via custom commands.
+- Surgical_Assistant_Events: contains code for control of the bot vie events like on_ready() and on_message().
