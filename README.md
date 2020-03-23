@@ -2,7 +2,7 @@
 A bot for my Discord server, spitalul.
 
 # Functions
-- Command $trans(dest_lang, message) : translates the given message to the destination language and outputs it to the same channel.
+- Command $trans(dest_lang, message): translates the given message to the destination language and outputs it to the same channel.
 - "Snarky Comments": responds to given keywords with a respective response (linked in a dictionary).
 
 # Files
