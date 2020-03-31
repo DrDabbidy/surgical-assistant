@@ -2,6 +2,7 @@
 
 import os
 import discord
+import random
 from discord.ext import commands
 from dotenv import load_dotenv
 from googletrans import Translator
@@ -138,6 +139,25 @@ async def show_lang(ctx, lang):
         else:
             await ctx.send("Not a valid language!")
         return
+
+@bot.command(name="troll_text", help="Takes your message and makes it into troll text: hello -- > h E l L o")
+async def make_troll_text(ctx, *, message):
+    out = message[:1]
+    uppercase = True
+    for c in message[1:]:
+        if c in '''.,!@#$%^&*()_-<>/?'";:[{\\|`~}]"'+=''':
+            if uppercase:
+                out += c.upper()
+            else:
+                out += c.lower()
+        else:
+            if uppercase:
+                out += " " + c.upper()
+            else:
+                out += " " + c.lower()
+        if random.randint(0,1) == 0:
+            uppercase = not uppercase
+    await ctx.send(out)
 
 # run the bot on the discord server
 bot.run(TOKEN)
