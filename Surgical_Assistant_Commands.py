@@ -158,7 +158,7 @@ async def make_troll_text(ctx, *, message):
         if random.randint(0,1) == 0:
             uppercase = not uppercase
     await ctx.message.delete()
-    await ctx.send(out + "\n(" + str(ctx.message.author) + ")")
+    await ctx.send(out + "\n(" + str(ctx.message.author.name) + ")")
 
 # run the bot on the discord server
 bot.run(TOKEN)
