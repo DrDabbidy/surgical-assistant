@@ -131,7 +131,7 @@ async def translate(ctx, dest_lang, *, message):
         await ctx.send(translation.origin + " :arrow_right: " + translation.text + "\n(" + translation.src + " :arrow_right: " + translation.dest + ")")
 
 @bot.command(name="lang", help="Shows the two letter language code for given language")
-async def show_lang(ctx, lang):
+async def show_lang(ctx, *, lang):
         if lang.lower() in LANGCODES:
             await ctx.send(LANGCODES[lang.lower()])
         elif lang.lower() == "chinese":
