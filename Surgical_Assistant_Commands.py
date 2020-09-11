@@ -140,7 +140,7 @@ async def show_lang(ctx, *, lang):
             await ctx.send("Not a valid language!")
         return
 
-@bot.command(name="troll_text", help="Takes your message and makes it into troll text: hello -- > h E l L o")
+@bot.command(name="troll", help="Takes your message and makes it into troll text: hello -- > h E l L o")
 async def make_troll_text(ctx, *, message):
     out = message[:1]
     uppercase = True
@@ -159,6 +159,25 @@ async def make_troll_text(ctx, *, message):
             uppercase = not uppercase
     await ctx.message.delete()
     await ctx.send(out + "\n(" + str(ctx.message.author.display_name) + ")")
+
+@bot.command(name="roles", help="Lists all available roles that you can add to yourself (e.g. school courses, etc.)")
+async def list_roles(ctx):
+    roles = ctx.message.guild.roles;
+    message = ""
+    for role in roles:
+        message += role.name + "\n"
+    await ctx.send(message);
+
+@bot.command(name="createrole", help="Create a default role with no permissions")
+async def create_role(ctx, *, name):
+    await ctx.message.guild.create_role(name=name, mentionable=True)
+
+@bot.command(name="getrole", help="Give yourself the role that you specify if you have the permissions")
+async def give_role(ctx, *, name):
+    for role in ctx.message.guild.roles:
+        if role.name == name:
+            if role.permissions == discord.Permissions.none():
+                await ctx.message.author.add_roles(role)
 
 # run the bot on the discord server
 bot.run(TOKEN)
