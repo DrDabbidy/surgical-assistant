@@ -4,6 +4,7 @@ import os
 import discord
 import random
 from discord.ext import commands
+from discord.utils import get
 from dotenv import load_dotenv
 from googletrans import Translator
 
@@ -166,11 +167,17 @@ async def list_roles(ctx):
     message = ""
     for role in roles:
         message += role.name + "\n"
-    await ctx.send(message);
+    embed = discord.Embed(
+        title="The Spitalul Roles!",
+        color=discord.Color(0x2b3f58),
+        description=message
+    )
+    await ctx.send(embed=embed)
 
 @bot.command(name="createrole", help="Create a default role with no permissions")
 async def create_role(ctx, *, name):
     await ctx.message.guild.create_role(name=name, mentionable=True)
+    await ctx.send(f"Created role {name}")
 
 @bot.command(name="getrole", help="Give yourself the role that you specify if you have the permissions")
 async def give_role(ctx, *, name):
@@ -178,6 +185,26 @@ async def give_role(ctx, *, name):
         if role.name == name:
             if role.permissions == discord.Permissions.none():
                 await ctx.message.author.add_roles(role)
+                await ctx.send(f"Added {role} to you!")
+
+@bot.command(name="removerole", help="Removes the given role from yourself")
+async def remove_role(ctx, *, roleName):
+    role = get(ctx.message.guild.roles, name=roleName)
+    if role == None:
+        await ctx.send("No such role exists...")
+    elif role.permissions == discord.Permissions.none():
+        await ctx.author.remove_roles(role)
+        await ctx.send(f"Removed {role} from you!")
+
+@bot.command(name="deleterole", help="Deletes the given role (need admin permissions)")
+@commands.has_role("chirurg")
+async def delete_role(ctx, *, roleName):
+    role = get(ctx.message.guild.roles, name=roleName)
+    if role == None:
+        await ctx.send("No such role exists...")
+    else:
+        await role.delete()
+        await ctx.send(f"Deleted {role}!")
 
 # run the bot on the discord server
 bot.run(TOKEN)
