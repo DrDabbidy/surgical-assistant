@@ -197,14 +197,16 @@ async def remove_role(ctx, *, roleName):
         await ctx.send(f"Removed {role} from you!")
 
 @bot.command(name="deleterole", help="Deletes the given role (need admin permissions)")
-@commands.has_role("chirurg")
 async def delete_role(ctx, *, roleName):
     role = get(ctx.message.guild.roles, name=roleName)
-    if role == None:
-        await ctx.send("No such role exists...")
+    if get(ctx.message.guild.roles, name="chirurg") in ctx.message.author.roles:
+        if role == None:
+            await ctx.send("No such role exists...")
+        else:
+            await role.delete()
+            await ctx.send(f"Deleted {role}!")
     else:
-        await role.delete()
-        await ctx.send(f"Deleted {role}!")
+        await ctx.send("Go back to med school for a few years to gain the ability to do that!")
 
 # run the bot on the discord server
 bot.run(TOKEN)
