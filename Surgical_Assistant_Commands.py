@@ -3,6 +3,9 @@
 import os
 import discord
 import random
+import sympy
+import pyglet
+from sympy import preview
 from discord.ext import commands
 from discord.utils import get
 from dotenv import load_dotenv
@@ -207,6 +210,14 @@ async def delete_role(ctx, *, roleName):
             await ctx.send(f"Deleted {role}!")
     else:
         await ctx.send("Go back to med school for a few years to gain the ability to do that!")
+
+@bot.command(name="latex", help="Returns a rendered image of the given latex source")
+async def render_latex(ctx, *, message):
+    formattedMessage = r"{}".format(message)
+    preview(formattedMessage + "\n\\end{document}", viewer="file", filename="image.png", euler=False)
+    await ctx.send("**" + ctx.message.author.display_name + "**:", file=discord.File("image.png"))
+    # await ctx.message.delete()
+    os.remove("image.png")
 
 # run the bot on the discord server
 bot.run(TOKEN)
