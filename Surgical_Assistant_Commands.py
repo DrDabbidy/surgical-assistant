@@ -180,7 +180,7 @@ async def list_roles(ctx):
 @bot.command(name="createrole", help="Create a default role with no permissions")
 async def create_role(ctx, *, name):
     await ctx.message.guild.create_role(name=name, mentionable=True)
-    await ctx.send(f"Created role {name}")
+    await ctx.send("Created role {}".format(name))
 
 @bot.command(name="getrole", help="Give yourself the role that you specify if you have the permissions")
 async def give_role(ctx, *, name):
@@ -188,7 +188,7 @@ async def give_role(ctx, *, name):
         if role.name == name:
             if role.permissions == discord.Permissions.none():
                 await ctx.message.author.add_roles(role)
-                await ctx.send(f"Added {role} to you!")
+                await ctx.send("Added {} to you!".format(role))
 
 @bot.command(name="removerole", help="Removes the given role from yourself")
 async def remove_role(ctx, *, roleName):
@@ -197,7 +197,7 @@ async def remove_role(ctx, *, roleName):
         await ctx.send("No such role exists...")
     elif role.permissions == discord.Permissions.none():
         await ctx.author.remove_roles(role)
-        await ctx.send(f"Removed {role} from you!")
+        await ctx.send("Removed {} from you!".format(role))
 
 @bot.command(name="deleterole", help="Deletes the given role (need admin permissions)")
 async def delete_role(ctx, *, roleName):
@@ -210,6 +210,8 @@ async def delete_role(ctx, *, roleName):
             await ctx.send(f"Deleted {role}!")
     else:
         await ctx.send("Go back to med school for a few years to gain the ability to do that!")
+        await role.delete()
+        await ctx.send("Deleted {}!".format(role))
 
 @bot.command(name="latex", help="Returns a rendered image of the given latex source")
 async def render_latex(ctx, *, message):

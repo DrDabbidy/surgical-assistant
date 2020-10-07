@@ -14,11 +14,10 @@ client = discord.Client()
 
 @client.event
 async def on_ready():
-    print(f'{client.user} has connected to Discord!')
+    print("Surgical Assistant has connected to Discord!")
 
 @client.event
 async def on_message(message):
-    print(message.author)
     comments = {
             "qwerty":"Come on now, let's not type gibberish!",
             "lettuce":"Lettuce shouldn't go on hamburgers (@bergermaestru himself told me)",
