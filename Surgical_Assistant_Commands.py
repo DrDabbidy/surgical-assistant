@@ -215,6 +215,8 @@ async def delete_role(ctx, *, roleName):
 
 @bot.command(name="latex", help="Returns a rendered image of the given latex source")
 async def render_latex(ctx, *, message):
+    if message[0] == "`" and message[-1] == "`":
+        message = message[1:-1]
     formattedMessage = r"{}".format(message)
     preview(formattedMessage + "\n\\end{document}", viewer="file", filename="image.png", euler=False)
     await ctx.send("**" + ctx.message.author.display_name + "**:", file=discord.File("image.png"))
