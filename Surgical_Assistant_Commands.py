@@ -233,12 +233,27 @@ async def render_latex(ctx, textColour, bgColour, message):
     # await ctx.message.delete()
     os.remove("image.png")
 
+def proccessTags(message, possibleTags):
+    tags = []
+    for i in range(len(possibleTags)):
+        index = message.find(" ")
+        if index != -1 and message[:index] in possibleTags:
+                tags.append(message[:index])
+                message = message[index+1:]
+        else:
+            return tags, message
+    return tags, message
+
 @bot.command(name="latex", help="Returns a rendered image of the given latex source, give an optional theme tag -light for light theme")
-async def latex(ctx, theme, *, message):
-    if (theme == "-light"):
+async def latex(ctx, *, message):
+    tags, message = proccessTags(message, ["-d", "-light"])
+    
+    if "-light" in tags:
         await render_latex(ctx, "000000", "FFFFFF", message)
     else:
-        await render_latex(ctx, "FFFFFF", "36393E", theme + " " + message)
+        await render_latex(ctx, "FFFFFF", "36393E", message)
+    if "-d" in tags:
+        await ctx.message.delete()
 
 # run the bot on the discord server
 bot.run(TOKEN)
