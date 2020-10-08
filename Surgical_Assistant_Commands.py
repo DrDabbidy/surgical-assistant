@@ -213,19 +213,18 @@ async def delete_role(ctx, *, roleName):
         await role.delete()
         await ctx.send("Deleted {}!".format(role))
 
-@bot.command(name="latex", help="Returns a rendered image of the given latex source")
-async def render_latex(ctx, *, message):
-    preamble = "\\documentclass[varwidth=true]{standalone}" \
-        "\\usepackage{amsmath}" \
-        "\\usepackage{color}" \
-        "\\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}" \
-        "\\usepackage[utf8]{inputenc}" \
-        "\\definecolor{dstext}{HTML}{FFFFFF}" \
-        "\\definecolor{dsbackground}{HTML}{36393E}" \
-        "\\begin{document}" \
-        "\\color{dstext}" \
-        "\\pagecolor{dsbackground}" \
-        "\\begin{huge}"
+async def render_latex(ctx, textColour, bgColour, message):
+    preamble = f"\\documentclass[varwidth=true]{{standalone}}" \
+        f"\\usepackage{{amsmath}}" \
+        f"\\usepackage{{color}}" \
+        f"\\usepackage[usenames,dvipsnames,svgnames,table]{{xcolor}}" \
+        f"\\usepackage[utf8]{{inputenc}}" \
+        f"\\definecolor{{dstext}}{{HTML}}{{{textColour}}}" \
+        f"\\definecolor{{dsbackground}}{{HTML}}{{{bgColour}}}" \
+        f"\\begin{{document}}" \
+        f"\\color{{dstext}}" \
+        f"\\pagecolor{{dsbackground}}" \
+        f"\\begin{{huge}}"
     if message[0] == "`" and message[-1] == "`":
         message = message[1:-1]
     formattedMessage = r"{}".format(message)
@@ -233,6 +232,13 @@ async def render_latex(ctx, *, message):
     await ctx.send("**" + ctx.message.author.display_name + "**:", file=discord.File("image.png"))
     # await ctx.message.delete()
     os.remove("image.png")
+
+@bot.command(name="latex", help="Returns a rendered image of the given latex source, give an optional theme tag -light for light theme")
+async def latex(ctx, theme, *, message):
+    if (theme == "-light"):
+        await render_latex(ctx, "000000", "FFFFFF", message)
+    else:
+        await render_latex(ctx, "FFFFFF", "36393E", theme + " " + message)
 
 # run the bot on the discord server
 bot.run(TOKEN)
