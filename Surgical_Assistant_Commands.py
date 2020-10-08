@@ -216,6 +216,7 @@ async def delete_role(ctx, *, roleName):
 async def render_latex(ctx, textColour, bgColour, message):
     preamble = f"\\documentclass[varwidth=true]{{standalone}}" \
         f"\\usepackage{{amsmath}}" \
+        f"\\usepackage{{amssymb}}" \
         f"\\usepackage{{color}}" \
         f"\\usepackage[usenames,dvipsnames,svgnames,table]{{xcolor}}" \
         f"\\usepackage[utf8]{{inputenc}}" \
