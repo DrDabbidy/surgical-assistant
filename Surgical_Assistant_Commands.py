@@ -215,10 +215,21 @@ async def delete_role(ctx, *, roleName):
 
 @bot.command(name="latex", help="Returns a rendered image of the given latex source")
 async def render_latex(ctx, *, message):
+    preamble = "\\documentclass[varwidth=true]{standalone}" \
+        "\\usepackage{amsmath}" \
+        "\\usepackage{color}" \
+        "\\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}" \
+        "\\usepackage[utf8]{inputenc}" \
+        "\\definecolor{dstext}{HTML}{FFFFFF}" \
+        "\\definecolor{dsbackground}{HTML}{36393E}" \
+        "\\begin{document}" \
+        "\\color{dstext}" \
+        "\\pagecolor{dsbackground}" \
+        "\\begin{huge}"
     if message[0] == "`" and message[-1] == "`":
         message = message[1:-1]
     formattedMessage = r"{}".format(message)
-    preview(formattedMessage + "\n\\end{document}", viewer="file", filename="image.png", euler=False)
+    preview(formattedMessage + "\n\\end{huge}\\end{document}", viewer="file", filename="image.png", euler=False, preamble=preamble)
     await ctx.send("**" + ctx.message.author.display_name + "**:", file=discord.File("image.png"))
     # await ctx.message.delete()
     os.remove("image.png")
