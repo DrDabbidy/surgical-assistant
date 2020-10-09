@@ -5,7 +5,7 @@ import discord
 import random
 import sympy
 import pyglet
-import pymongo
+# import pymongo
 from sympy import preview
 from discord.ext import commands
 from discord.utils import get
