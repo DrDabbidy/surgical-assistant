@@ -5,6 +5,7 @@ import discord
 import random
 import sympy
 import pyglet
+import pymongo
 from sympy import preview
 from discord.ext import commands
 from discord.utils import get
@@ -129,6 +130,13 @@ LANGCODES = dict(map(reversed, LANGUAGES.items()))
 translator = Translator()
 bot = commands.Bot(command_prefix="$")
 
+# # set up the mongodb client
+# myClient = pymongo.MongoClient("mongodb://localhost:27017/")
+# # create the db or switch to it
+# myDB = myClient["surgical_assistant"]
+# # enter the users collection
+
+# COMMANDS
 @bot.command(name="trans", help="Translates a message from any language into the specified language")
 async def translate(ctx, dest_lang, *, message):
         translation = translator.translate(message, dest = dest_lang)
@@ -172,6 +180,19 @@ async def list_roles(ctx):
         message += role.name + "\n"
     embed = discord.Embed(
         title="The Spitalul Roles!",
+        color=discord.Color(0x2b3f58),
+        description=message
+    )
+    await ctx.send(embed=embed)
+
+@bot.command(name="myroles", help="Lists all roles that you currently have (e.g. school courses, etc.)")
+async def list_roles(ctx):
+    roles = ctx.message.author.roles;
+    message = ""
+    for role in roles:
+        message += role.name + "\n"
+    embed = discord.Embed(
+        title=ctx.message.author.display_name + "'s Roles!",
         color=discord.Color(0x2b3f58),
         description=message
     )
