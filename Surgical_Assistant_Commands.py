@@ -231,8 +231,6 @@ async def delete_role(ctx, *, roleName):
             await ctx.send(f"Deleted {role}!")
     else:
         await ctx.send("Go back to med school for a few years to gain the ability to do that!")
-        await role.delete()
-        await ctx.send("Deleted {}!".format(role))
 
 async def render_latex(ctx, textColour, bgColour, message):
     preamble = f"\\documentclass[varwidth=true]{{standalone}}" \
