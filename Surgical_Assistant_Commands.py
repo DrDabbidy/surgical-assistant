@@ -236,6 +236,7 @@ async def render_latex(ctx, textColour, bgColour, message):
     preamble = f"\\documentclass[varwidth=true]{{standalone}}" \
         f"\\usepackage{{amsmath}}" \
         f"\\usepackage{{amssymb}}" \
+        f"\\usepackage{{mathtools}}" \
         f"\\usepackage{{color}}" \
         f"\\usepackage[usenames,dvipsnames,svgnames,table]{{xcolor}}" \
         f"\\usepackage[utf8]{{inputenc}}" \
