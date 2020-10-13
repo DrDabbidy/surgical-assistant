@@ -234,11 +234,13 @@ async def delete_role(ctx, *, roleName):
 
 async def render_latex(ctx, textColour, bgColour, message):
     preamble = f"\\documentclass[varwidth=true]{{standalone}}" \
+        f"\\usepackage[usenames,dvipsnames,svgnames,table]{{xcolor}}" \
         f"\\usepackage{{amsmath}}" \
         f"\\usepackage{{amssymb}}" \
         f"\\usepackage{{mathtools}}" \
+        f"\\usepackage{{pgfplots}}" \
+        f"\\pgfplotsset{{width=10cm,compat=1.16}}" \
         f"\\usepackage{{color}}" \
-        f"\\usepackage[usenames,dvipsnames,svgnames,table]{{xcolor}}" \
         f"\\usepackage[utf8]{{inputenc}}" \
         f"\\definecolor{{dstext}}{{HTML}}{{{textColour}}}" \
         f"\\definecolor{{dsbackground}}{{HTML}}{{{bgColour}}}" \
@@ -249,10 +251,20 @@ async def render_latex(ctx, textColour, bgColour, message):
     if message[0] == "`" and message[-1] == "`":
         message = message[1:-1]
     formattedMessage = r"{}".format(message)
-    preview(formattedMessage + "\n\\end{huge}\\end{document}", viewer="file", filename="image.png", euler=False, preamble=preamble, dvioptions=['-D','1200'])
+
+    texfile = open("file.tex", "w")
+    texfile.write(preamble + formattedMessage + "\end{huge}\\end{document}")
+    texfile.close()
+
+    # create pdf from tex and convert to png
+    os.system("pdflatex file.tex")
+    os.system("convert -density 1200 -quality 90 -trim file.pdf image.png")
+
+    # preview(formattedMessage + "\n\\end{huge}\\end{document}", viewer="file", filename="image.png", euler=False, preamble=preamble, dvioptions=['-D','1200'])
     await ctx.send("**" + ctx.message.author.display_name + "**:", file=discord.File("image.png"))
-    # await ctx.message.delete()
     os.remove("image.png")
+    os.remove("file.tex")
+    os.remove("file.pdf")
 
 def proccessTags(message, possibleTags):
     tags = []
