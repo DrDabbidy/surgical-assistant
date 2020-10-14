@@ -248,8 +248,11 @@ async def render_latex(ctx, textColour, bgColour, message):
         f"\\color{{dstext}}" \
         f"\\pagecolor{{dsbackground}}" \
         f"\\begin{{huge}}"
-    if message[0] == "`" and message[-1] == "`":
+    if message[:3] == "```" and message[-3:] == "```":
+        message = message[3:-3]
+    elif message[0] == "`" and message[-1] == "`":
         message = message[1:-1]
+    
     formattedMessage = r"{}".format(message)
 
     texfile = open("file.tex", "w")
