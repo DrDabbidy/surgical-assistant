@@ -1,6 +1,7 @@
 # code for the bot Surgical Assistant - commands
 
 import os
+import subprocess
 import discord
 import random
 import sympy
@@ -233,7 +234,8 @@ async def delete_role(ctx, *, roleName):
         await ctx.send("Go back to med school for a few years to gain the ability to do that!")
 
 async def render_latex(ctx, textColour, bgColour, message):
-    preamble = f"\\documentclass[varwidth=true]{{standalone}}" \
+    preamble = f"\\documentclass[14pt]{{article}}" \
+        f"\\usepackage[active,tightpage]{{preview}}" \
         f"\\usepackage[usenames,dvipsnames,svgnames,table]{{xcolor}}" \
         f"\\usepackage{{amsmath}}" \
         f"\\usepackage{{amssymb}}" \
@@ -245,6 +247,7 @@ async def render_latex(ctx, textColour, bgColour, message):
         f"\\definecolor{{dstext}}{{HTML}}{{{textColour}}}" \
         f"\\definecolor{{dsbackground}}{{HTML}}{{{bgColour}}}" \
         f"\\begin{{document}}" \
+        f"\\begin{{preview}}" \
         f"\\color{{dstext}}" \
         f"\\pagecolor{{dsbackground}}" \
         f"\\begin{{huge}}"
@@ -256,13 +259,21 @@ async def render_latex(ctx, textColour, bgColour, message):
     formattedMessage = r"{}".format(message)
 
     texfile = open("file.tex", "w")
-    texfile.write(preamble + formattedMessage + "\end{huge}\\end{document}")
+    texfile.write(preamble + formattedMessage + "\\end{huge}\\end{preview}\\end{document}")
     texfile.close()
 
-    # create pdf from tex and convert to png
-    os.system("pdflatex file.tex")
-    os.system("convert -density 1200 -quality 90 -trim file.pdf image.png")
-
+    try:
+        # create pdf from tex and convert to png
+        subprocess.run(["pdflatex", "-interaction=nonstopmode", "file.tex"])
+        # os.system("pdflatex file.tex")
+        # os.system("convert -density 1200 -quality 90 -trim file.pdf image.png")
+        os.system("convert -density 1200 -quality 90 -colorspace RGB file.pdf image.png")
+    except:
+        await ctx.send(embed=discord.Embed(
+            title= "Render Error!",
+            color=discord.Color(0x2b3f58),
+            description="An error has occured... please try again"
+        ).set_thumbnail(url="https://statsify.net/img/assets/error.gif"))
     # preview(formattedMessage + "\n\\end{huge}\\end{document}", viewer="file", filename="image.png", euler=False, preamble=preamble, dvioptions=['-D','1200'])
     await ctx.send("**" + ctx.message.author.display_name + "**:", file=discord.File("image.png"))
     os.remove("image.png")
