@@ -267,7 +267,7 @@ async def render_latex(ctx, textColour, bgColour, message):
         subprocess.run(["pdflatex", "-interaction=nonstopmode", "file.tex"])
         # os.system("pdflatex file.tex")
         # os.system("convert -density 1200 -quality 90 -trim file.pdf image.png")
-        os.system("convert -density 1200 -quality 90 -colorspace RGB file.pdf image.png")
+        os.system(f"convert -density 1200 -quality 90 -background \"#{bgColour}\" -flatten file.pdf image.png")
     except:
         await ctx.send(embed=discord.Embed(
             title= "Render Error!",
