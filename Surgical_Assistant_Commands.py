@@ -6,13 +6,11 @@ import discord
 import random
 import sympy
 import pyglet
-# import pymongo
 from sympy import preview
 from discord.ext import commands
 from discord.utils import get
 from dotenv import load_dotenv
 from googletrans import Translator
-
 
 # get the bot token from the file .env in same directory
 load_dotenv()
@@ -302,5 +300,21 @@ async def latex(ctx, *, message):
     if "-d" in tags:
         await ctx.message.delete()
 
+@bot.command(name="embed", help="Makes a nice embed that the bot will send, deleting the original message")
+async def makeEmbed(ctx, *, message):
+    messageEmbed = discord.Embed(
+        description=message,
+        color=ctx.message.author.color
+    )
+    
+    if ctx.message.attachments:
+        messageEmbed.set_image(url=ctx.message.attachments[0].url)
+    
+    messageEmbed.set_footer(text="Spitalul", icon_url=str(ctx.guild.icon_url))
+    messageEmbed.set_author(name=str(ctx.message.author.display_name), icon_url=str(ctx.message.author.avatar_url))
+        
+    await ctx.send(embed=messageEmbed)
+    await ctx.message.delete()
+        
 # run the bot on the discord server
 bot.run(TOKEN)
