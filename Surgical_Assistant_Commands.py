@@ -4,9 +4,7 @@ import os
 import subprocess
 import discord
 import random
-import sympy
-import pyglet
-from sympy import preview
+#from sympy import preview
 from discord.ext import commands
 from discord.utils import get
 from dotenv import load_dotenv
@@ -127,7 +125,7 @@ LANGCODES = dict(map(reversed, LANGUAGES.items()))
 
 # create translator for $trans command
 translator = Translator()
-bot = commands.Bot(command_prefix="$")
+bot = commands.Bot(command_prefix="$", intents=discord.Intents.all())
 
 # # set up the mongodb client
 # myClient = pymongo.MongoClient("mongodb://localhost:27017/")
